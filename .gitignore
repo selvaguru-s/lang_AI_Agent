@@ -1,0 +1,10 @@
+# Ignore virtual environments in server and client
+server/venv/
+client/venv/
+
+# Ignore node_modules in frontend
+frontend/node_modules/
+
+# (Optional) Ignore all __pycache__ and other temp files
+**/__pycache__/
+*.pyc
