@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+  <div :class="['min-h-screen transition-all duration-300', themeStore.isDarkMode ? 'bg-gray-900' : 'bg-white']">
     <!-- Enhanced Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20 sticky top-0 z-50">
+    <nav :class="['backdrop-blur-md shadow-lg sticky top-0 z-50 transition-all duration-300', themeStore.colors.bg.overlay, themeStore.colors.border.primary, 'border-b']">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -12,16 +12,16 @@
                 </svg>
               </div>
               <div>
-                <h1 class="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                <h1 :class="['text-xl font-bold', themeStore.colors.text.primary]">
                   AI Linux Agent
                 </h1>
-                <p class="text-xs text-gray-500">Remote Command Center</p>
+                <p :class="['text-xs', themeStore.colors.text.secondary]">Remote Command Center</p>
               </div>
             </div>
-            <div class="hidden md:ml-8 md:flex md:space-x-1">
+            <div class="hidden md:ml-8 md:flex md:items-center md:space-x-1">
               <router-link 
                 to="/" 
-                class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm"
+                :class="['px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm', themeStore.colors.status.info.bg, themeStore.colors.status.info.text]"
               >
                 <div class="flex items-center space-x-2">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -32,7 +32,7 @@
               </router-link>
               <router-link 
                 to="/clients" 
-                class="text-gray-600 hover:bg-gray-100 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                :class="['px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200', themeStore.colors.text.secondary, 'hover:' + themeStore.colors.bg.tertiary, 'hover:' + themeStore.colors.text.primary]"
               >
                 <div class="flex items-center space-x-2">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -43,7 +43,7 @@
               </router-link>
               <router-link 
                 to="/tasks" 
-                class="text-gray-600 hover:bg-gray-100 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                :class="['px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200', themeStore.colors.text.secondary, 'hover:' + themeStore.colors.bg.tertiary, 'hover:' + themeStore.colors.text.primary]"
               >
                 <div class="flex items-center space-x-2">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -52,20 +52,41 @@
                   <span>Tasks</span>
                 </div>
               </router-link>
+              
+              <!-- Stats in Navigation Bar -->
+              <div :class="['flex items-center space-x-4 ml-6 pl-6 border-l', themeStore.colors.border.secondary]">
+                <!-- Connected Clients -->
+                <div class="flex items-center space-x-2">
+                  <div :class="['w-2 h-2 rounded-full', getOnlineClientCount() > 0 ? 'bg-success-500' : 'bg-error-500']"></div>
+                  <span :class="['text-sm font-medium', themeStore.colors.text.primary]">{{ getOnlineClientCount() }}</span>
+                  <span :class="['text-xs', themeStore.colors.text.tertiary]">clients</span>
+                </div>
+                
+                <!-- Total Tasks -->
+                <div class="flex items-center space-x-2">
+                  <svg class="w-3 h-3 text-info-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                  </svg>
+                  <span :class="['text-sm font-medium', themeStore.colors.text.primary]">{{ recentTasks?.length || 0 }}</span>
+                  <span :class="['text-xs', themeStore.colors.text.tertiary]">tasks</span>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- User Menu Dropdown -->
-          <div class="relative">
-            <button
+          <!-- Theme Toggle and User Menu -->
+          <div class="flex items-center space-x-3">
+            <ThemeToggle />
+            <div class="relative">
+              <button
               @click="toggleUserMenu"
               class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               ref="userMenuButton"
             >
               <div class="hidden sm:block text-right">
-                <div class="text-sm font-medium text-gray-900">
+                <div :class="['text-sm font-medium', themeStore.colors.text.primary]">
                   {{ authStore.userInfo.email }}
                 </div>
-                <div class="text-xs text-gray-500">View profile</div>
+                <div :class="['text-xs', themeStore.colors.text.secondary]">View profile</div>
               </div>
               <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
                 <span class="text-white text-sm font-semibold">
@@ -193,6 +214,7 @@
                 </button>
               </div>
             </div>
+            </div>
           </div>
         </div>
       </div>
@@ -201,101 +223,34 @@
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Welcome Header -->
-        <div class="text-center mb-8">
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-            Welcome back! 👋
-          </h2>
-          <p class="text-lg text-gray-600">
-            Execute commands across your Linux infrastructure with AI intelligence
-          </p>
-        </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15.586 13H14a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-gray-600">Online Clients</p>
-                <p class="text-2xl font-bold text-gray-900">{{ getOnlineClientCount() }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-gray-600">Total Tasks</p>
-                <p class="text-2xl font-bold text-gray-900">{{ recentTasks?.length || 0 }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-gray-600">Success Rate</p>
-                <p class="text-2xl font-bold text-gray-900">{{ getSuccessRate() }}%</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="wsConnectionClass">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M17.778 8.222c-4.296-4.296-11.26-4.296-15.556 0A1 1 0 01.808 6.808c5.076-5.077 13.308-5.077 18.384 0a1 1 0 01-1.414 1.414zM14.95 11.05a7 7 0 00-9.9 0 1 1 0 01-1.414-1.414 9 9 0 0112.728 0 1 1 0 01-1.414 1.414zM12.12 13.88a3 3 0 00-4.24 0 1 1 0 01-1.415-1.414 5 5 0 017.07 0 1 1 0 01-1.415 1.414zM9 16a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-gray-600">Connection</p>
-                <p class="text-2xl font-bold text-gray-900">{{ wsConnectionStatus }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- Main Dashboard Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           
-          <!-- Command Execution Panel -->
+          <!-- Command Execution Panel - Left 2/3 -->
           <div class="lg:col-span-2">
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-hidden">
+            <div :class="['rounded-xl', themeStore.isDarkMode ? 'bg-gray-800' : 'bg-white']" style="box-shadow: 0 -4px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 16px -4px rgba(0, 0, 0, 0.1), -4px 0 16px -4px rgba(0, 0, 0, 0.1), 4px 0 16px -4px rgba(0, 0, 0, 0.1);">
               <!-- Header -->
-              <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
-                <div class="flex items-center space-x-3">
-                  <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                    </svg>
-                  </div>
+              <div class="px-6 py-5 pb-4">
+                <div class="flex items-center justify-between">
                   <div>
-                    <h3 class="text-xl font-bold text-white">Command Center</h3>
-                    <p class="text-indigo-100 text-sm">Execute commands with AI assistance</p>
+                    <h2 :class="['text-xl font-semibold', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">Command Center</h2>
+                    <p :class="['text-sm mt-1', themeStore.isDarkMode ? 'text-gray-300' : 'text-gray-600']">Execute commands with AI assistance</p>
+                  </div>
+                  
+                  <!-- Status Indicator -->
+                  <div class="flex items-center space-x-3">
+                    <div v-if="connectedClient" class="flex items-center space-x-2">
+                      <div class="flex h-2 w-2">
+                        <div class="animate-ping absolute h-2 w-2 rounded-full bg-green-400 opacity-75"></div>
+                        <div class="relative h-2 w-2 rounded-full bg-green-500"></div>
+                      </div>
+                      <span :class="['text-sm font-medium', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">{{ connectedClient.hostname }}</span>
+                    </div>
+                    <div v-else class="flex items-center space-x-2">
+                      <div class="h-2 w-2 rounded-full bg-red-500"></div>
+                      <span :class="['text-sm', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-600']">Disconnected</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -303,191 +258,173 @@
               <!-- Command Form -->
               <div class="p-6">
                 <form @submit.prevent="executeCommand" class="space-y-6">
-                  <div>
-                    <label for="machine" class="block text-sm font-semibold text-gray-700 mb-2">
-                      🖥️ Select Target Machine
-                    </label>
-                    <select
-                      id="machine"
-                      v-model="selectedMachine"
-                      class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm py-3 px-4 bg-gray-50/50 transition-all duration-200"
-                      required
-                    >
-                      <option value="">Choose a machine...</option>
-                      <option v-for="client in clients" :key="client.machine_id" :value="client.machine_id">
-                        {{ client.hostname }} ({{ client.os_info }}) - {{ client.is_active ? '🟢 Online' : '🔴 Offline' }}
-                      </option>
-                    </select>
-                  </div>
                   
                   <div>
-                    <label for="command" class="block text-sm font-semibold text-gray-700 mb-2">
-                      ⚡ Command or Task Description
+                    <label for="command" :class="['block text-sm font-medium mb-3', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">
+                      Command or Description
                     </label>
-                    <textarea
-                      id="command"
-                      v-model="commandInput"
-                      rows="4"
-                      class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm py-3 px-4 bg-gray-50/50 transition-all duration-200 font-mono"
-                      placeholder="e.g., 'Check system uptime and memory usage' or 'ls -la /var/www'"
-                      required
-                    ></textarea>
-                    <p class="mt-2 text-xs text-gray-500">💡 Describe what you want to do in natural language, or enter specific commands</p>
+                    <div class="relative">
+                      <textarea
+                        id="command"
+                        v-model="commandInput"
+                        rows="4"
+                        :class="[
+                          'block w-full rounded-lg border-0 py-3 px-4 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset',
+                          'text-sm font-mono transition-all duration-200 resize-none',
+                          themeStore.isDarkMode ? 'bg-gray-700 text-white ring-gray-600 focus:ring-blue-500 placeholder-gray-400' : 'bg-white text-gray-900 ring-gray-300 focus:ring-blue-600 placeholder-gray-500'
+                        ]"
+                        placeholder="Enter a command or describe what you want to do..."
+                        required
+                      ></textarea>
+                      <div class="absolute inset-y-0 right-0 flex items-end pb-3 pr-3">
+                        <svg class="h-4 w-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <p :class="['mt-2 text-xs', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-600']">Use natural language or specific commands</p>
                   </div>
                   
                   <button
                     type="submit"
                     :disabled="isButtonDisabled"
-                    class="w-full inline-flex justify-center items-center px-6 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
+                    :class="[
+                      'w-full inline-flex justify-center items-center px-4 py-2.5 text-sm font-medium text-white',
+                      'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
+                      'rounded-lg shadow-sm transition-all duration-200',
+                      'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600'
+                    ]"
                   >
-                    <svg v-if="isExecuting" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <svg v-if="isExecuting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <svg v-else class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <svg v-else class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
                     </svg>
-                    {{ isExecuting ? 'Executing...' : 'Execute Command' }}
+                    {{ isExecuting ? 'Executing...' : 'Execute' }}
                   </button>
                 </form>
               </div>
             </div>
           </div>
 
-          <!-- Right Sidebar -->
-          <div class="space-y-6">
-            
-            <!-- Live Terminal -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-hidden">
+          <!-- Live Terminal - Right 1/3 -->
+          <div class="lg:col-span-1">
+            <div :class="['rounded-xl', themeStore.isDarkMode ? 'bg-gray-800' : 'bg-white']" style="box-shadow: 0 -4px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 16px -4px rgba(0, 0, 0, 0.1), -4px 0 16px -4px rgba(0, 0, 0, 0.1), 4px 0 16px -4px rgba(0, 0, 0, 0.1);">
               <!-- Header -->
-              <div class="bg-gradient-to-r from-green-500 to-teal-600 px-4 py-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 class="font-bold text-white">Live Terminal</h3>
-                      <p class="text-green-100 text-xs">Real-time output</p>
-                    </div>
-                  </div>
-                  <div class="flex items-center space-x-2">
-                    <div class="w-2 h-2 rounded-full" :class="isConnected ? 'bg-green-300 animate-pulse' : 'bg-red-300'"></div>
-                    <span class="text-green-100 text-xs">{{ wsConnectionStatus }}</span>
-                  </div>
+              <div class="px-4 py-3 pb-2 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <div :class="['w-3 h-3 rounded-full', isConnected ? 'bg-green-500' : 'bg-red-500']"></div>
+                  <h3 :class="['text-sm font-medium', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">Terminal</h3>
                 </div>
+                <span :class="['text-xs', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-600']">{{ wsConnectionStatus }}</span>
               </div>
 
               <!-- Terminal Body -->
-              <div class="bg-gray-900 p-4 h-64 overflow-y-auto font-mono text-sm">
+              <div :class="['p-4 h-80 overflow-y-auto font-mono text-xs rounded-b-xl', themeStore.isDarkMode ? 'bg-black text-green-400' : 'bg-gray-900 text-green-400']">
                 <div v-if="terminalOutput && terminalOutput.length > 0" class="space-y-1">
                   <div v-for="(line, index) in terminalOutput" :key="index" class="flex">
-                    <span class="text-gray-500 text-xs mr-3 flex-shrink-0 w-16">{{ line.timestamp }}</span>
+                    <span class="text-gray-500 text-xs mr-2 flex-shrink-0 w-12">{{ line.timestamp }}</span>
                     <span :class="getTerminalLineClass(line.type)" class="flex-1 break-all">{{ line.content }}</span>
                   </div>
                 </div>
-                <div v-else class="flex items-center justify-center h-full text-gray-500">
+                <div v-else class="flex items-center justify-center h-full text-gray-400">
                   <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto mb-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                    </svg>
-                    <p class="text-sm">Ready for commands...</p>
-                    <p class="text-xs mt-1">Terminal output will appear here</p>
+                    <div class="text-2xl mb-2">$</div>
+                    <p class="text-xs">Waiting for output...</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <!-- Recent Tasks -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-hidden">
-              <!-- Header -->
-              <div class="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-3">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-white">Recent Tasks</h3>
-                    <p class="text-orange-100 text-xs">{{ recentTasks?.length || 0 }} tasks</p>
-                  </div>
+        <!-- Recent Tasks - Full Width -->
+        <div class="mt-8">
+          <div :class="['rounded-xl', themeStore.isDarkMode ? 'bg-gray-800' : 'bg-white']" style="box-shadow: 0 -6px 20px -6px rgba(0, 0, 0, 0.15), 0 6px 20px -6px rgba(0, 0, 0, 0.15), -6px 0 20px -6px rgba(0, 0, 0, 0.15), 6px 0 20px -6px rgba(0, 0, 0, 0.15);">
+            <!-- Header -->
+            <div class="px-6 py-4 pb-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 :class="['text-lg font-semibold', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">Recent Tasks</h2>
+                  <p :class="['text-sm mt-1', themeStore.isDarkMode ? 'text-gray-300' : 'text-gray-600']">{{ recentTasks?.length || 0 }} commands executed</p>
                 </div>
+                <router-link 
+                  to="/tasks" 
+                  class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  View all
+                  <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </router-link>
               </div>
+            </div>
 
-              <!-- Tasks List -->
-              <div class="max-h-80 overflow-y-auto">
-                <div v-if="!recentTasks || recentTasks.length === 0" class="p-6 text-center text-gray-500">
-                  <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <!-- Tasks List -->
+            <div class="space-y-2 p-3">
+              <div v-if="!recentTasks || recentTasks.length === 0" class="p-8 text-center">
+                <div class="w-12 h-12 mx-auto mb-4 text-gray-300">
+                  <svg fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2v8h12V6H4z" clip-rule="evenodd"/>
                   </svg>
-                  <p class="text-sm font-medium">No recent tasks</p>
-                  <p class="text-xs mt-1">Execute your first command to get started</p>
                 </div>
-                
-                <div v-else class="divide-y divide-gray-100">
-                  <div
-                    v-for="(task, index) in recentTasks.slice(0, 5)"
-                    :key="task.task_id"
-                    class="p-4 hover:bg-gray-50/70 cursor-pointer transition-all duration-200 group"
-                    @click="$router.push(`/tasks/${task.task_id}`)"
-                  >
-                    <div class="flex items-start space-x-3">
-                      <!-- Status Icon -->
-                      <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" 
-                           :class="getModernTaskStatusClass(task.status)">
-                        <span class="text-white text-xs font-bold">{{ index + 1 }}</span>
-                      </div>
+                <p :class="['text-sm font-medium', themeStore.isDarkMode ? 'text-gray-300' : 'text-gray-600']">No tasks yet</p>
+                <p :class="['text-xs mt-1', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500']">Execute your first command to get started</p>
+              </div>
+              
+              <div v-else>
+                <div
+                  v-for="(task, index) in recentTasks.slice(0, 8)"
+                  :key="task.task_id"
+                  @mouseenter="(e) => e.target.style.boxShadow = '0 -2px 8px -2px rgba(0, 0, 0, 0.15), 0 2px 8px -2px rgba(0, 0, 0, 0.15), -2px 0 8px -2px rgba(0, 0, 0, 0.15), 2px 0 8px -2px rgba(0, 0, 0, 0.15)'"
+                  @mouseleave="(e) => e.target.style.boxShadow = 'none'"
+                  :class="['p-4 rounded-lg cursor-pointer transition-all duration-200 group', themeStore.isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50']"
+                  @click="$router.push(`/tasks/${task.task_id}`)"
+                >
+                  <div class="flex items-center space-x-4">
+                    <!-- Status Indicator -->
+                    <div class="flex-shrink-0">
+                      <div :class="[
+                        'w-2 h-2 rounded-full',
+                        task.status === 'completed' ? 'bg-green-500' :
+                        task.status === 'running' ? 'bg-blue-500 animate-pulse' :
+                        task.status === 'failed' ? 'bg-red-500' : 'bg-gray-400'
+                      ]" style="box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);"></div>
+                    </div>
 
-                      <!-- Task Content -->
-                      <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                    <!-- Task Content -->
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between">
+                        <p :class="['text-sm font-medium line-clamp-1', themeStore.isDarkMode ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-blue-600']">
                           {{ task.original_prompt }}
                         </p>
-                        <div class="mt-1 flex items-center space-x-3 text-xs text-gray-500">
-                          <div class="flex items-center space-x-1">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15.586 13H14a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>{{ task.machine_id?.substring(0, 12) }}...</span>
-                          </div>
-                          <div class="flex items-center space-x-1">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>{{ getRelativeTime(task.created_at) }}</span>
-                          </div>
-                        </div>
-
-                        <!-- Status Badge -->
-                        <div class="mt-2">
-                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
-                                :class="getTaskStatusBadgeClass(task.status)">
-                            {{ getTaskStatusIcon(task.status) }} {{ task.status.charAt(0).toUpperCase() + task.status.slice(1) }}
+                        <div class="flex items-center space-x-3">
+                          <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full" :class="[
+                            task.status === 'completed' ? (themeStore.isDarkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-800') :
+                            task.status === 'running' ? (themeStore.isDarkMode ? 'bg-blue-900 text-blue-300' : 'bg-blue-100 text-blue-800') :
+                            task.status === 'failed' ? (themeStore.isDarkMode ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-800') : 
+                            (themeStore.isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-800')
+                          ]" style="box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);">
+                            {{ task.status === 'completed' ? 'Done' :
+                               task.status === 'running' ? 'Running' :
+                               task.status === 'failed' ? 'Failed' : 'Pending' }}
                           </span>
                         </div>
                       </div>
-
-                      <!-- Arrow -->
-                      <div class="flex-shrink-0 text-gray-400 group-hover:text-indigo-500 transition-colors">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                        </svg>
+                      <div class="flex items-center mt-1 space-x-2">
+                        <span :class="['text-xs', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500']">{{ getRelativeTime(task.created_at) }}</span>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <!-- View All Tasks Link -->
-                <div v-if="recentTasks && recentTasks.length > 5" class="p-4 bg-gray-50/50 border-t border-gray-100">
-                  <router-link 
-                    to="/tasks" 
-                    class="block text-center text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
-                  >
-                    View all {{ recentTasks.length }} tasks →
-                  </router-link>
+                    <!-- Arrow -->
+                    <div :class="['flex-shrink-0 transition-colors', themeStore.isDarkMode ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-400 group-hover:text-gray-600']">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -502,11 +439,14 @@
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useThemeStore } from '@/stores/theme'
 import { useWebSocket } from '@/services/websocket'
 import { tasksAPI, clientsAPI, authAPI } from '@/services/api'
 import { format } from 'date-fns'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
 const router = useRouter()
 const { isConnected, on, off } = useWebSocket()
 
@@ -517,6 +457,15 @@ const isExecuting = ref(false)
 const clients = ref([])
 const recentTasks = ref([])
 const terminalOutput = ref([])
+
+// Auto-select first available client
+const connectedClient = computed(() => {
+  const activeClient = clients.value.find(client => client.is_active)
+  if (activeClient && !selectedMachine.value) {
+    selectedMachine.value = activeClient.machine_id
+  }
+  return activeClient
+})
 
 // API Key state
 const currentApiKey = ref('')
@@ -531,9 +480,9 @@ const userMenuDropdown = ref(null)
 
 // Computed
 const wsConnectionStatus = computed(() => isConnected.value ? 'Connected' : 'Disconnected')
-const wsConnectionClass = computed(() => isConnected.value ? 'bg-gradient-to-br from-green-400 to-green-600' : 'bg-gradient-to-br from-red-400 to-red-600')
+const wsConnectionClass = computed(() => isConnected.value ? themeStore.gradients.success : themeStore.gradients.error)
 const isButtonDisabled = computed(() => {
-  return !selectedMachine.value || !commandInput.value?.trim() || isExecuting.value
+  return !connectedClient.value || !commandInput.value?.trim() || isExecuting.value
 })
 
 // API Key computed
@@ -544,14 +493,14 @@ const maskedApiKey = computed(() => {
 
 // Methods
 const executeCommand = async () => {
-  if (!selectedMachine.value || !commandInput.value.trim()) {
+  if (!connectedClient.value || !commandInput.value.trim()) {
     return
   }
   
   try {
     isExecuting.value = true
     
-    const response = await tasksAPI.create(commandInput.value, selectedMachine.value)
+    const response = await tasksAPI.create(commandInput.value, connectedClient.value.machine_id)
     
     addTerminalLine(`Command submitted: ${commandInput.value}`, 'info')
     addTerminalLine(`Task ID: ${response.data.task_id}`, 'info')
@@ -620,10 +569,10 @@ const formatDate = (dateString) => {
 
 const getTerminalLineClass = (type) => {
   switch (type) {
-    case 'error': return 'text-red-400'
-    case 'success': return 'text-green-400' 
-    case 'info': return 'text-blue-400'
-    default: return 'text-green-400'
+    case 'error': return 'text-error-400'
+    case 'success': return 'text-success-400' 
+    case 'info': return 'text-info-400'
+    default: return 'text-success-400'
   }
 }
 
@@ -632,11 +581,6 @@ const getOnlineClientCount = () => {
   return clients.value?.filter(client => client.is_active)?.length || 0
 }
 
-const getSuccessRate = () => {
-  if (!recentTasks.value || recentTasks.value.length === 0) return 100
-  const completedTasks = recentTasks.value.filter(task => task.status === 'completed').length
-  return Math.round((completedTasks / recentTasks.value.length) * 100)
-}
 
 const getModernTaskStatusClass = (status) => {
   switch (status) {
@@ -649,10 +593,10 @@ const getModernTaskStatusClass = (status) => {
 
 const getTaskStatusBadgeClass = (status) => {
   switch (status) {
-    case 'completed': return 'bg-green-100 text-green-800'
-    case 'running': return 'bg-blue-100 text-blue-800'
-    case 'failed': return 'bg-red-100 text-red-800'
-    default: return 'bg-gray-100 text-gray-800'
+    case 'completed': return `${themeStore.colors.status.success.bg} ${themeStore.colors.status.success.text}`
+    case 'running': return `${themeStore.colors.status.running.bg} ${themeStore.colors.status.running.text}`
+    case 'failed': return `${themeStore.colors.status.error.bg} ${themeStore.colors.status.error.text}`
+    default: return `${themeStore.colors.bg.tertiary} ${themeStore.colors.text.secondary}`
   }
 }
 

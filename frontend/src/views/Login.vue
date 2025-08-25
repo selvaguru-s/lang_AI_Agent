@@ -1,69 +1,105 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10"></div>
+  <div :class="['min-h-screen transition-all duration-300', themeStore.isDarkMode ? 'bg-gray-900' : 'bg-gray-50']">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+      <!-- Animated Background Shapes -->
+      <div class="absolute top-10 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-pulse"></div>
+      <div class="absolute top-1/3 right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+      <div class="absolute bottom-20 left-1/4 w-28 h-28 bg-indigo-500/10 rounded-full blur-xl animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
     
-    <div class="flex min-h-screen">
-      <!-- Left Side - Branding -->
-      <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 items-center justify-center p-12">
-        <div class="text-center text-white max-w-md">
-          <div class="w-20 h-20 mx-auto mb-8 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur">
-            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
-            </svg>
+    <div class="relative flex min-h-screen">
+      <!-- Left Side - Enhanced Branding -->
+      <div class="hidden lg:flex lg:w-1/2 items-center justify-center p-12 relative">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700"></div>
+        <div class="absolute inset-0 bg-black/20"></div>
+        
+        <!-- Content -->
+        <div class="relative text-center text-white max-w-lg z-10">
+          <!-- Logo with Animation -->
+          <div class="relative mb-8">
+            <div class="w-24 h-24 mx-auto bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm" style="box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);">
+              <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+              </svg>
+            </div>
+            <!-- Pulsing Ring -->
+            <div class="absolute inset-0 w-24 h-24 mx-auto rounded-2xl border-2 border-white/30 animate-ping"></div>
           </div>
-          <h1 class="text-4xl font-bold mb-4">AI Linux Agent</h1>
-          <p class="text-xl mb-8 text-indigo-100">Execute commands across your Linux infrastructure with AI intelligence</p>
-          <div class="space-y-4 text-sm text-indigo-200">
-            <div class="flex items-center justify-center space-x-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              <span>Remote command execution</span>
+          
+          <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">AI Linux Agent</h1>
+          <p class="text-xl mb-10 text-white/90 leading-relaxed">Revolutionize your infrastructure management with intelligent command execution and real-time monitoring</p>
+          
+          <!-- Feature Cards -->
+          <div class="space-y-4">
+            <div class="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all duration-300 hover:bg-white/20">
+              <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h3 class="font-semibold text-white">Smart Command Execution</h3>
+                <p class="text-sm text-white/70">Execute complex commands with AI assistance</p>
+              </div>
             </div>
-            <div class="flex items-center justify-center space-x-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              <span>AI-powered assistance</span>
+            
+            <div class="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all duration-300 hover:bg-white/20">
+              <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h3 class="font-semibold text-white">Real-time Monitoring</h3>
+                <p class="text-sm text-white/70">Monitor system performance and health</p>
+              </div>
             </div>
-            <div class="flex items-center justify-center space-x-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              <span>Real-time monitoring</span>
+            
+            <div class="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all duration-300 hover:bg-white/20">
+              <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-purple-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h3 class="font-semibold text-white">Multi-Server Management</h3>
+                <p class="text-sm text-white/70">Manage multiple Linux servers from one place</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Right Side - Forms -->
-      <div class="flex-1 flex items-center justify-center p-6 sm:p-12">
+      <div class="flex-1 flex items-center justify-center p-6 sm:p-12 relative">
         <div class="w-full max-w-md">
           
           <!-- Mobile Logo -->
           <div class="lg:hidden text-center mb-8">
-            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-              <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+            <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center" style="box-shadow: 0 -4px 16px -4px rgba(59, 130, 246, 0.3), 0 4px 16px -4px rgba(59, 130, 246, 0.3), -4px 0 16px -4px rgba(59, 130, 246, 0.3), 4px 0 16px -4px rgba(59, 130, 246, 0.3);">
+              <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
               </svg>
             </div>
-            <h2 class="text-2xl font-bold text-gray-900">AI Linux Agent</h2>
+            <h2 :class="['text-3xl font-bold mb-2', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">AI Linux Agent</h2>
+            <p :class="['text-sm', themeStore.isDarkMode ? 'text-gray-300' : 'text-gray-600']">Professional Infrastructure Management</p>
           </div>
 
           <!-- Auth Form Card -->
-          <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/50 p-8">
+          <div :class="['rounded-2xl p-8 transition-all duration-300', themeStore.isDarkMode ? 'bg-gray-800' : 'bg-white']" style="box-shadow: 0 -8px 32px -8px rgba(0, 0, 0, 0.1), 0 8px 32px -8px rgba(0, 0, 0, 0.1), -8px 0 32px -8px rgba(0, 0, 0, 0.1), 8px 0 32px -8px rgba(0, 0, 0, 0.1);">
             
             <!-- Mode Tabs -->
             <div class="mb-8">
-              <div class="flex space-x-1 bg-gray-100 p-1 rounded-xl">
+              <div :class="['flex space-x-1 p-1 rounded-xl', themeStore.isDarkMode ? 'bg-gray-700' : 'bg-gray-100']">
                 <button
                   @click="setMode('signin')"
                   :class="[
-                    'flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all duration-200',
+                    'flex-1 py-3 px-4 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105',
                     currentMode === 'signin' 
-                      ? 'bg-white text-indigo-600 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? (themeStore.isDarkMode ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-blue-600 shadow-md') 
+                      : (themeStore.isDarkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200')
                   ]"
                 >
                   Sign In
@@ -71,10 +107,10 @@
                 <button
                   @click="setMode('signup')"
                   :class="[
-                    'flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all duration-200',
+                    'flex-1 py-3 px-4 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105',
                     currentMode === 'signup' 
-                      ? 'bg-white text-indigo-600 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? (themeStore.isDarkMode ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-blue-600 shadow-md') 
+                      : (themeStore.isDarkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200')
                   ]"
                 >
                   Sign Up
@@ -82,10 +118,10 @@
                 <button
                   @click="setMode('reset')"
                   :class="[
-                    'flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all duration-200',
+                    'flex-1 py-3 px-4 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105',
                     currentMode === 'reset' 
-                      ? 'bg-white text-indigo-600 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? (themeStore.isDarkMode ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-blue-600 shadow-md') 
+                      : (themeStore.isDarkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200')
                   ]"
                 >
                   Reset
@@ -94,17 +130,17 @@
             </div>
 
             <!-- Form Header -->
-            <div class="text-center mb-6">
-              <h3 class="text-2xl font-bold text-gray-900">
+            <div class="text-center mb-8">
+              <h3 :class="['text-3xl font-bold mb-3', themeStore.isDarkMode ? 'text-white' : 'text-gray-900']">
                 {{ getFormTitle() }}
               </h3>
-              <p class="mt-2 text-sm text-gray-600">
+              <p :class="['text-sm leading-relaxed', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-600']">
                 {{ getFormSubtitle() }}
               </p>
             </div>
 
             <!-- Error Display -->
-            <div v-if="error" class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
+            <div v-if="error" :class="['mb-6 px-4 py-3 rounded-xl text-sm border', themeStore.colors.status.error.bg, themeStore.colors.status.error.text, themeStore.colors.status.error.border]">
               <div class="flex items-center">
                 <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -114,7 +150,7 @@
             </div>
 
             <!-- Success Display -->
-            <div v-if="success" class="mb-6 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-xl text-sm">
+            <div v-if="success" :class="['mb-6 px-4 py-3 rounded-xl text-sm border', themeStore.colors.status.success.bg, themeStore.colors.status.success.text, themeStore.colors.status.success.border]">
               <div class="flex items-center">
                 <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -128,8 +164,14 @@
               
               <!-- Email Field -->
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+                <label for="email" :class="['block text-sm font-semibold mb-3', themeStore.isDarkMode ? 'text-gray-200' : 'text-gray-700']">
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                    </svg>
+                    <span>Email Address</span>
+                  </div>
                 </label>
                 <div class="relative">
                   <input
@@ -138,9 +180,13 @@
                     type="email"
                     required
                     :class="[
-                      'w-full px-4 py-3 border rounded-xl transition-all duration-200 bg-gray-50 focus:bg-white',
-                      'focus:ring-2 focus:ring-indigo-500 focus:border-transparent',
-                      emailError ? 'border-red-300' : 'border-gray-300'
+                      'w-full px-5 py-4 rounded-xl transition-all duration-300 text-sm font-medium',
+                      'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none',
+                      'transform focus:scale-[1.02] hover:scale-[1.01]',
+                      themeStore.isDarkMode ? 
+                        'bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:bg-gray-600' :
+                        'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-500 focus:bg-white',
+                      emailError ? 'border-red-500 ring-red-500' : ''
                     ]"
                     placeholder="Enter your email address"
                     @blur="validateEmail"
@@ -156,8 +202,13 @@
 
               <!-- Password Field -->
               <div v-if="currentMode !== 'reset'">
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                  Password
+                <label for="password" :class="['block text-sm font-semibold mb-3', themeStore.isDarkMode ? 'text-gray-200' : 'text-gray-700']">
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Password</span>
+                  </div>
                 </label>
                 <div class="relative">
                   <input
@@ -166,9 +217,13 @@
                     :type="showPassword ? 'text' : 'password'"
                     required
                     :class="[
-                      'w-full px-4 py-3 border rounded-xl transition-all duration-200 bg-gray-50 focus:bg-white pr-10',
-                      'focus:ring-2 focus:ring-indigo-500 focus:border-transparent',
-                      passwordError ? 'border-red-300' : 'border-gray-300'
+                      'w-full px-5 py-4 pr-12 rounded-xl transition-all duration-300 text-sm font-medium',
+                      'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none',
+                      'transform focus:scale-[1.02] hover:scale-[1.01]',
+                      themeStore.isDarkMode ? 
+                        'bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:bg-gray-600' :
+                        'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-500 focus:bg-white',
+                      passwordError ? 'border-red-500 ring-red-500' : ''
                     ]"
                     placeholder="Enter your password"
                     @blur="validatePassword"
@@ -263,12 +318,13 @@
                 type="submit"
                 :disabled="loading || !isFormValid"
                 :class="[
-                  'w-full py-3 px-4 rounded-xl font-medium transition-all duration-200',
-                  'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+                  'w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform',
+                  'focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:ring-offset-2',
                   (loading || !isFormValid)
-                    ? 'bg-gray-400 cursor-not-allowed text-white'
-                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:-translate-y-1'
                 ]"
+                style="box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);"
               >
                 <div class="flex items-center justify-center">
                   <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
@@ -280,12 +336,12 @@
               </button>
 
               <!-- Divider -->
-              <div v-if="currentMode !== 'reset'" class="relative">
+              <div v-if="currentMode !== 'reset'" class="relative my-8">
                 <div class="absolute inset-0 flex items-center">
-                  <div class="w-full border-t border-gray-300"></div>
+                  <div :class="['w-full border-t', themeStore.isDarkMode ? 'border-gray-600' : 'border-gray-300']"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                  <span class="px-4 bg-white text-gray-500">or</span>
+                  <span :class="['px-6 font-medium', themeStore.isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500']">or continue with</span>
                 </div>
               </div>
 
@@ -295,7 +351,15 @@
                 type="button"
                 @click="handleGoogleLogin"
                 :disabled="loading"
-                class="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl bg-white text-gray-700 hover:bg-gray-50 font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                :class="[
+                  'w-full flex items-center justify-center py-4 px-6 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105',
+                  'focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2',
+                  'disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none',
+                  themeStore.isDarkMode ? 
+                    'border border-gray-600 bg-gray-700 text-white hover:bg-gray-600' :
+                    'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                ]"
+                style="box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);"
               >
                 <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -327,11 +391,13 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useThemeStore } from '@/stores/theme'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '@/services/firebase'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
 
 // State
 const currentMode = ref('signin') // 'signin', 'signup', 'reset'

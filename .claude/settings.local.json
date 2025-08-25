@@ -14,7 +14,8 @@
       "Bash(sed:*)",
       "Bash(find:*)",
       "Bash(timeout 10 python3:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": [],

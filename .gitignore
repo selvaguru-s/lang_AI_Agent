@@ -1,5 +1,5 @@
-# Ignore virtual environments in server and client
-server/venv/
+# Ignore virtual environments in backend and client
+backend/venv/
 client/venv/
 
 # Ignore node_modules in frontend
